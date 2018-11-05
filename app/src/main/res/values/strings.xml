@@ -1,0 +1,5 @@
+<resources>
+    <string name="app_name">Pixiv</string>
+    <string name="email">&#160;&#160;邮箱</string>
+    <string name="password">&#160;密码</string>
+</resources>

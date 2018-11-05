@@ -1,0 +1,25 @@
+<?xml version="1.0" encoding="utf-8"?>
+<menu xmlns:tools="http://schemas.android.com/tools"
+    xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto">
+
+    <group android:checkableBehavior="single">
+        <item
+            android:icon="@drawable/homepage"
+            android:title="homepage" />
+        <item
+            android:icon="@drawable/newimage"
+            android:title="new" />
+        <item
+            android:icon="@drawable/search"
+            android:title="search"
+            tools:layout_editor_absoluteX="100dp"
+            tools:layout_editor_absoluteY="0dp" />
+        <item
+            android:title="log out"
+            tools:layout_editor_absoluteX="100dp"
+            tools:layout_editor_absoluteY="0dp" />
+
+    </group>
+
+</menu>
