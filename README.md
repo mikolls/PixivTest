@@ -4,9 +4,9 @@
 目前算是个半成品吧（笑）
 <br>
 emmmm一个还可以的的登陆界面吧(起码登陆和记住密码实现了23333)
-</br>
+
   <div  align=center>
-    <br>![image](https://github.com/mikolls/PixivTest/blob/master/images/login(1).png)</br>
+    <br>![image](https://github.com/mikolls/PixivTest/blob/master/images/login(1).png)
   </div>
 <br>
 输入账号密码
