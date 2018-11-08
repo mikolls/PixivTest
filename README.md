@@ -6,7 +6,7 @@
 emmmm一个还可以的的登陆界面吧(起码登陆和记住密码实现了23333)
 </br>
 <div  align=center>
-<br>![image](https://github.com/mikolls/PixivTest/blob/master/images/login(1).png)</br>
+  <br>![image](https://github.com/mikolls/PixivTest/blob/master/images/login(1).png)</br>
 </div>
 <br>
 输入账号密码
