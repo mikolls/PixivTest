@@ -245,6 +245,7 @@ public class LoginActivity extends AppCompatActivity{
         ActivityCollector.removeActivity(this);
         persistentCookieStore.removeAll();
     }
+
     private void getIndex(){
         new Thread(new Runnable() {
             @Override

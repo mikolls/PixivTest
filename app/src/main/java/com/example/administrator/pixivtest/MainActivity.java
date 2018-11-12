@@ -1,13 +1,14 @@
 package com.example.administrator.pixivtest;
 
-import android.content.Intent;
-import android.content.SharedPreferences;
 import android.graphics.Bitmap;
 import android.graphics.BitmapFactory;
 import android.os.Handler;
 import android.os.Message;
 import android.support.design.widget.NavigationView;
+import android.support.v4.app.Fragment;
+import android.support.v4.app.FragmentStatePagerAdapter;
 import android.support.v4.view.GravityCompat;
+import android.support.v4.view.ViewPager;
 import android.support.v4.widget.DrawerLayout;
 import android.support.v7.app.ActionBar;
 import android.support.v7.app.AppCompatActivity;
@@ -17,13 +18,23 @@ import android.util.Log;
 import android.view.Menu;
 import android.view.MenuItem;
 import android.view.View;
+import android.view.ViewGroup;
+import android.widget.FrameLayout;
 import android.widget.ImageView;
+import android.widget.RadioGroup;
 import android.widget.TextView;
 import android.widget.Toast;
 
-import com.example.administrator.pixivtest.store.CookieStore;
+import com.example.administrator.pixivtest.Bean.DailyBean;
+import com.example.administrator.pixivtest.ViewParger.DailyFragment;
+import com.example.administrator.pixivtest.ViewParger.WeekFragment;
+import com.example.administrator.pixivtest.adapter.Myadapter;
 import com.example.administrator.pixivtest.store.PersistentCookieStore;
+import com.google.gson.Gson;
+import com.google.gson.reflect.TypeToken;
 
+import org.json.JSONArray;
+import org.json.JSONObject;
 import org.jsoup.Jsoup;
 import org.jsoup.nodes.Document;
 import org.jsoup.nodes.Element;
@@ -36,12 +47,11 @@ import java.util.List;
 import de.hdodenhof.circleimageview.CircleImageView;
 import okhttp3.Call;
 import okhttp3.Callback;
-import okhttp3.Cookie;
 import okhttp3.OkHttpClient;
 import okhttp3.Request;
 import okhttp3.Response;
 
-public class MainActivity extends AppCompatActivity {
+public class MainActivity extends AppCompatActivity implements RadioGroup.OnCheckedChangeListener, ViewPager.OnPageChangeListener{
 
     private DrawerLayout mdrawerLayout;
 
@@ -69,6 +79,17 @@ public class MainActivity extends AppCompatActivity {
 
     private String UserImg;
 
+    //屏幕一半的宽度
+    private int width;
+
+    private RadioGroup radioGroup;
+    //定义布局内的控件
+    private View view;
+    //自定义指示器
+    private ViewPager viewPager;
+    //数据源的集合
+    List<Fragment> list = new ArrayList<>();
+
     private Handler mHandler = new Handler(){
         @Override
         public void handleMessage(Message msg) {
@@ -80,7 +101,6 @@ public class MainActivity extends AppCompatActivity {
                     userName.setText(username);
                     break;
                 case 2 :
-
                     byte[] userPicture = (byte[])msg.obj;
                     Bitmap bitmap = BitmapFactory.decodeByteArray(userPicture,0,userPicture.length);
                     userImg.setImageBitmap(bitmap);
@@ -100,6 +120,8 @@ public class MainActivity extends AppCompatActivity {
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
+        list.add(new DailyFragment());
+        list.add(new WeekFragment());
         setContentView(R.layout.activity_main);
         ActivityCollector.addActivity(this);
 
@@ -118,6 +140,7 @@ public class MainActivity extends AppCompatActivity {
         }
 
         getUserName();
+//        getDailyJson();
 
 
 
@@ -135,7 +158,22 @@ public class MainActivity extends AppCompatActivity {
         userName = (TextView)headerView.findViewById(R.id.user_name);
 
         userImg = (CircleImageView)headerView.findViewById(R.id.user_img);
-        imageView = (ImageView)findViewById(R.id.img);
+
+        radioGroup = (RadioGroup) findViewById(R.id.home_rg);
+        view = findViewById(R.id.home_wl_view);
+        viewPager = (ViewPager)findViewById(R.id.home_ViewPager);
+        FragmentStatePagerAdapter adapter = new Myadapter(getSupportFragmentManager(),list);
+        viewPager.setAdapter(adapter);
+        radioGroup.setOnCheckedChangeListener(this);
+        viewPager.addOnPageChangeListener(this);
+        initVi();
+    }
+
+    private void initVi() {
+        width = getResources().getDisplayMetrics().widthPixels / 2;
+        //设置下划线View的长度
+        FrameLayout.LayoutParams par = new FrameLayout.LayoutParams(width, ViewGroup.LayoutParams.MATCH_PARENT);
+        view.setLayoutParams(par);
 
     }
 
@@ -170,6 +208,7 @@ public class MainActivity extends AppCompatActivity {
         });
     }
 
+
     private void getuserImg(){
 
                 Log.i("Avatar_img",UserImg);
@@ -187,10 +226,7 @@ public class MainActivity extends AppCompatActivity {
 
                     @Override
                     public void onResponse(Call call, Response response) throws IOException {
-
-                        Log.i("response",response.body().toString());
                         byte[] Picture_img = response.body().bytes();
-
                         Message message = mHandler.obtainMessage();
                         message.obj = Picture_img;
                         message.what = 2;
@@ -200,6 +236,7 @@ public class MainActivity extends AppCompatActivity {
                 });
 
     }
+
 
     private void getUserName(){
 
@@ -233,7 +270,8 @@ public class MainActivity extends AppCompatActivity {
                 UserData = addStr+userData;     //用户信息界面地址
                 Log.i("UserData",UserData);
 
-
+/*                selecct = parse.select("ul[class=_image-items gtm-illust-recommend-zone]");
+                Log.i("recommend",selecct.outerHtml());*/
 
 
                 message = mHandler.obtainMessage();
@@ -250,6 +288,41 @@ public class MainActivity extends AppCompatActivity {
         });
 
     }
+
+    private void getDailyJson(){
+        Request request = new Request.Builder()
+                .url("https://api.imjad.cn/pixiv/v1/?type=rank&content=all&mode=daily&page=1&per_page=20&date=2018-11-08")
+                .build();
+        client.newCall(request).enqueue(new Callback() {
+            @Override
+            public void onFailure(Call call, IOException e) {
+
+            }
+
+            @Override
+            public void onResponse(Call call, Response response) throws IOException {
+                String dailyJson = response.body().string();
+/*                try {
+                    JSONObject jsonObject = new JSONObject(dailyJson);
+                    JSONArray list = new JSONArray(jsonObject.getJSONArray("response").getJSONObject(0).getJSONArray("works").getJSONObject(0).getJSONArray("work").toString());
+//                    Log.i("json",list.length()+"");
+                    Log.i("",jsonObject.getString("works").toString());
+                }catch (Exception e){
+                    e.printStackTrace();        //已废弃    Gson解析更为方便
+                }*/
+            Gson gson = new Gson();
+                DailyBean dailyBean = gson.fromJson(dailyJson,DailyBean.class);
+                dailyBean.getResponse().get(0).getWorks();
+            List<String> list = new ArrayList<>();
+            for (int i = 0;i<dailyBean.getResponse().get(0).getWorks().size();i++){
+                list.add(dailyBean.getResponse().get(0).getWorks().get(i).getWork().getImage_urls().getPx_480mw());
+                Log.i("url",dailyBean.getResponse().get(0).getWorks().get(i).getWork().getImage_urls().getPx_480mw());
+            }
+
+            }
+        });
+    }
+
 
     @Override
     public boolean onCreateOptionsMenu(Menu menu) {
@@ -278,4 +351,33 @@ public class MainActivity extends AppCompatActivity {
     }
 
 
+    @Override
+    public void onPageScrolled(int position, float positionOffset, int positionOffsetPixels) {
+
+        //"页面:" + position + "
+        // offset偏移百分比" + positionOffset
+        // pix像素" + positionOffsetPixels
+        //设置下划线的属性
+        //设置下划线View的长度
+        FrameLayout.LayoutParams par = (FrameLayout.LayoutParams) view.getLayoutParams();
+        //设置下划线距离左边的位置长度
+        int left = (int) ((positionOffset + position) * width);
+        par.setMargins(left, 0, 0, 0);
+        view.setLayoutParams(par);
+    }
+
+    @Override
+    public void onPageSelected(int position) {
+        radioGroup.check(position == 0 ? R.id.home_DailyList : R.id.home_WeekList);
+    }
+
+    @Override
+    public void onPageScrollStateChanged(int state) {
+
+    }
+
+    @Override
+    public void onCheckedChanged(RadioGroup group, int checkedId) {
+        viewPager.setCurrentItem(checkedId == R.id.home_DailyList ? 0 : 1);
+    }
 }
