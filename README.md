@@ -16,3 +16,6 @@ emmmm一个还可以的的登陆界面吧(起码登陆和记住密码实现了23
 <br>
 <br>![image](https://github.com/mikolls/PixivTest/blob/master/images/userData(1).png)</br>
 </br>
+2018-11-12  新增日榜功能(low爆了的界面 - -)
+------------
+![image](https://github.com/mikolls/PixivTest/blob/master/images/userData(1).png)</br>
