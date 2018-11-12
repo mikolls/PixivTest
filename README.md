@@ -14,7 +14,7 @@ emmmm一个还可以的的登陆界面吧(起码登陆和记住密码实现了23
 登陆成功之后左边的用户信息界面就会自动加载你的用户名字和头像(由于技术限制 其他功能还没完成 汗!)
 </br>
 <br>
-<br>![image](https://github.com/mikolls/PixivTest/blob/master/images/userdata1.png)</br>
+<br>![image](https://github.com/mikolls/PixivTest/blob/master/images/userdata.png)</br>
 </br>
 2018-11-12  新增日榜功能(low爆了的界面 - -)
 ------------
