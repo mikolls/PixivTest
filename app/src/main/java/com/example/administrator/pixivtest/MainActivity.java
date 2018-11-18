@@ -138,12 +138,7 @@ public class MainActivity extends AppCompatActivity implements RadioGroup.OnChec
             actionBar.setDisplayHomeAsUpEnabled(true);
             actionBar.setHomeAsUpIndicator(R.mipmap.leftmenu);
         }
-
         getUserName();
-//        getDailyJson();
-
-
-
     }
 
     private void bindCompoent(){
@@ -288,41 +283,6 @@ public class MainActivity extends AppCompatActivity implements RadioGroup.OnChec
         });
 
     }
-
-    private void getDailyJson(){
-        Request request = new Request.Builder()
-                .url("https://api.imjad.cn/pixiv/v1/?type=rank&content=all&mode=daily&page=1&per_page=20&date=2018-11-08")
-                .build();
-        client.newCall(request).enqueue(new Callback() {
-            @Override
-            public void onFailure(Call call, IOException e) {
-
-            }
-
-            @Override
-            public void onResponse(Call call, Response response) throws IOException {
-                String dailyJson = response.body().string();
-/*                try {
-                    JSONObject jsonObject = new JSONObject(dailyJson);
-                    JSONArray list = new JSONArray(jsonObject.getJSONArray("response").getJSONObject(0).getJSONArray("works").getJSONObject(0).getJSONArray("work").toString());
-//                    Log.i("json",list.length()+"");
-                    Log.i("",jsonObject.getString("works").toString());
-                }catch (Exception e){
-                    e.printStackTrace();        //已废弃    Gson解析更为方便
-                }*/
-            Gson gson = new Gson();
-                DailyBean dailyBean = gson.fromJson(dailyJson,DailyBean.class);
-                dailyBean.getResponse().get(0).getWorks();
-            List<String> list = new ArrayList<>();
-            for (int i = 0;i<dailyBean.getResponse().get(0).getWorks().size();i++){
-                list.add(dailyBean.getResponse().get(0).getWorks().get(i).getWork().getImage_urls().getPx_480mw());
-                Log.i("url",dailyBean.getResponse().get(0).getWorks().get(i).getWork().getImage_urls().getPx_480mw());
-            }
-
-            }
-        });
-    }
-
 
     @Override
     public boolean onCreateOptionsMenu(Menu menu) {

@@ -12,48 +12,45 @@ import android.widget.TextView;
 import com.bumptech.glide.Glide;
 import com.bumptech.glide.load.model.GlideUrl;
 import com.bumptech.glide.load.model.LazyHeaders;
-import com.example.administrator.pixivtest.Bean.Daily;
+import com.example.administrator.pixivtest.Bean.Week;
 import com.example.administrator.pixivtest.R;
 
-import java.lang.reflect.Array;
 import java.util.ArrayList;
-import java.util.List;
 
 /**
- * Created by Administrator on 2018/11/10.
+ * Created by Administrator on 2018/11/16.
  */
 
-public class DailyAdapter extends RecyclerView.Adapter<DailyAdapter.ViewHolder> {
-
+public class WeekAdapter extends RecyclerView.Adapter<WeekAdapter.ViewHolder> {
     private Context mContext;
 
-    private ArrayList<Daily> dailyList ;
+    private ArrayList<Week> weekList ;
 
-    public DailyAdapter(Context context,ArrayList<Daily> dailyList){
+    public WeekAdapter(Context context,ArrayList<Week> weekList){
         this.mContext = context;
-        this.dailyList = dailyList;
+        this.weekList = weekList;
     }
 
     @Override
-    public ViewHolder onCreateViewHolder(ViewGroup parent, int viewType) {
-        View view = LayoutInflater.from(parent.getContext()).inflate(R.layout.itemdaily,parent,false);
-        return new ViewHolder(view);
+    public WeekAdapter.ViewHolder onCreateViewHolder(ViewGroup parent, int viewType) {
+        View view = LayoutInflater.from(parent.getContext()).inflate(R.layout.itemweek,parent,false);
+        return new WeekAdapter.ViewHolder(view);
     }
 
     @Override
     public void onBindViewHolder(ViewHolder holder, int position) {
-        GlideUrl glideUrl = new GlideUrl(dailyList.get(position).getImage_url(), new LazyHeaders.Builder()
+        GlideUrl glideUrl = new GlideUrl(weekList.get(position).getImage_url(), new LazyHeaders.Builder()
                 .addHeader("Referer","https://www.pixiv.net/")
                 .addHeader("User-Agent","Mozilla/5.0 (Windows NT 10.0; WOW64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/69.0.3497.100 Safari/537.36")
                 .build());
         Glide.with(mContext).load(glideUrl).into(holder.dailyView);
-        holder.painter.setText(dailyList.get(position).getPainter());
-        holder.works.setText(dailyList.get(position).getWorks());
+        holder.painter.setText(weekList.get(position).getPainter());
+        holder.works.setText(weekList.get(position).getWorks());
     }
 
     @Override
     public int getItemCount() {
-        return dailyList.size();
+        return weekList.size();
     }
 
     public class ViewHolder extends RecyclerView.ViewHolder{
@@ -66,9 +63,9 @@ public class DailyAdapter extends RecyclerView.Adapter<DailyAdapter.ViewHolder> 
         public ViewHolder(View itemView) {
             super(itemView);
             cardView = (CardView) itemView;
-            dailyView = (ImageView) itemView.findViewById(R.id.daily_img);
-            works = (TextView)itemView.findViewById(R.id.works);
-            painter = (TextView)itemView.findViewById(R.id.painter);
+            dailyView = (ImageView) itemView.findViewById(R.id.week_img);
+            works = (TextView)itemView.findViewById(R.id.week_works);
+            painter = (TextView)itemView.findViewById(R.id.week_painter);
 
         }
     }

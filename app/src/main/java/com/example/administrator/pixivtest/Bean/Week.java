@@ -1,18 +1,17 @@
 package com.example.administrator.pixivtest.Bean;
 
 /**
- * Created by Administrator on 2018/11/10.
+ * Created by Administrator on 2018/11/16.
  */
 
-public class Daily {
-
+public class Week {
     private String image_url;
 
     private String works;   //作品名字
 
     private String painter;     //作者
 
-    public Daily(){}
+    public Week(){}
 
     public String getImage_url() {
         return image_url;

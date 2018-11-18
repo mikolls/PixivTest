@@ -5,12 +5,10 @@ import com.google.gson.annotations.SerializedName;
 import java.util.List;
 
 /**
- * Created by Administrator on 2018/11/9.
+ * Created by Administrator on 2018/11/16.
  */
 
-public class DailyBean {
-
-
+public class WeekBean {
 
     private String status;
     private String count;
@@ -187,6 +185,7 @@ public class DailyBean {
             }
 
             public static class WorkBean {
+
 
                 private String id;
                 private String title;
@@ -397,7 +396,11 @@ public class DailyBean {
                 }
 
                 public static class ImageUrlsBean {
-
+                    /**
+                     * px_128x128 : https://i.pximg.net/c/128x128/img-master/img/2018/11/10/18/00/10/71588619_p0_square1200.jpg
+                     * px_480mw : https://i.pximg.net/c/480x960/img-master/img/2018/11/10/18/00/10/71588619_p0_master1200.jpg
+                     * large : https://i.pximg.net/img-original/img/2018/11/10/18/00/10/71588619_p0.jpg
+                     */
 
                     private String px_128x128;
                     private String px_480mw;
@@ -430,9 +433,9 @@ public class DailyBean {
 
                 public static class StatsBean {
                     /**
-                     * scored_count : 4981
-                     * score : 49810
-                     * views_count : 74188
+                     * scored_count : 14382
+                     * score : 143820
+                     * views_count : 147906
                      * favorited_count : {"public":null,"private":null}
                      * commented_count : null
                      */
@@ -608,8 +611,8 @@ public class DailyBean {
 
                     public static class ProfileImageUrlsBean {
                         /**
-                         * px_170x170 : https://i.pximg.net/user-profile/img/2015/12/30/19/26/46/10307852_e9687aa5de3f4103cb3b99845e221462_170.jpg
-                         * px_50x50 : https://i.pximg.net/user-profile/img/2015/12/30/19/26/46/10307852_e9687aa5de3f4103cb3b99845e221462_50.jpg
+                         * px_170x170 : https://i.pximg.net/user-profile/img/2016/05/31/14/38/50/11002845_8506eb1a3648f39fdf399e749988688b_170.jpg
+                         * px_50x50 : https://i.pximg.net/user-profile/img/2016/05/31/14/38/50/11002845_8506eb1a3648f39fdf399e749988688b_50.jpg
                          */
 
                         private String px_170x170;

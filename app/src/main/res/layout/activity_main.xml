@@ -55,6 +55,7 @@
         </RadioGroup>
 
                 <FrameLayout
+                    android:id="@+id/fralayout"
                     android:layout_below="@id/home_rg"
                     android:layout_width="match_parent"
                     android:layout_height="5dp">
@@ -73,7 +74,7 @@
                 </FrameLayout>
 
                 <android.support.v4.view.ViewPager
-                    android:layout_below="@id/home_rg"
+                    android:layout_below="@id/fralayout"
                     android:id="@+id/home_ViewPager"
                     android:layout_width="match_parent"
                     android:layout_height="match_parent"/>

@@ -40,6 +40,7 @@ import okhttp3.Response;
  */
 
 public class DailyFragment extends Fragment {
+
     private OkHttpClient.Builder builder;
 
     private OkHttpClient client;
@@ -50,6 +51,10 @@ public class DailyFragment extends Fragment {
 
     private List<String> dailyList;
 
+    private List<String> worksList;
+
+    private List<String> painterList;
+
     private RecyclerView recyclerView;
 
     private ArrayList<Daily> androidDaily;
@@ -58,19 +63,17 @@ public class DailyFragment extends Fragment {
 
     private  Calendar cal;
 
+    private Message message;
+
     private Handler mHandler = new Handler() {
         @Override
         public void handleMessage(Message msg) {
             super.handleMessage(msg);
             switch (msg.what) {
                 case 1:
-                    dailyList = (List<String>) msg.obj;
-                    androidDaily = initData();
+                    androidDaily = (ArrayList<Daily>) msg.obj;
                     adapter = new DailyAdapter(MyApplication.getContext(),androidDaily);
                     recyclerView.setAdapter(adapter);
-                   /* for (String s : dailyList){
-                        Log.i("111",s);
-                    }*/
                     break;
             }
         }
@@ -123,24 +126,36 @@ public class DailyFragment extends Fragment {
                 Gson gson = new Gson();
                 DailyBean dailyBean = gson.fromJson(dailyJson,DailyBean.class);
                 dailyBean.getResponse().get(0).getWorks();
-                List<String> list = new ArrayList<>();
+                List<String> imgurl = new ArrayList<>();
+                List<String> works = new ArrayList<>();
+                List<String> painter = new ArrayList<>();
                 for (int i = 0;i<dailyBean.getResponse().get(0).getWorks().size();i++){
-                    list.add(dailyBean.getResponse().get(0).getWorks().get(i).getWork().getImage_urls().getPx_480mw());
+                    imgurl.add(dailyBean.getResponse().get(0).getWorks().get(i).getWork().getImage_urls().getPx_480mw());
+                    painter.add(dailyBean.getResponse().get(0).getWorks().get(i).getWork().getUser().getName());
+                    works.add(dailyBean.getResponse().get(0).getWorks().get(i).getWork().getTitle());
                     Log.i("url",dailyBean.getResponse().get(0).getWorks().get(i).getWork().getImage_urls().getPx_480mw());
                 }
-                Message message = mHandler.obtainMessage();
-                message.obj = list;
+                dailyList = imgurl;
+                worksList = works;
+                painterList = painter;
+                ArrayList<Daily> DailylList = initData();
+                message = mHandler.obtainMessage();
+                message.obj = DailylList;
                 message.what = 1;
                 mHandler.sendMessage(message);
+
             }
         });
     }
 
     private ArrayList<Daily> initData() {
         ArrayList<Daily> dailies = new ArrayList<>();
+
         for(int i=0; i<dailyList.size(); ++i){
             Daily daily = new Daily();
             daily.setImage_url(dailyList.get(i));
+            daily.setWorks(worksList.get(i));
+            daily.setPainter(painterList.get(i));
             dailies.add(daily);
         }
         return dailies;
