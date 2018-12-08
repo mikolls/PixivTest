@@ -13,7 +13,9 @@ import com.bumptech.glide.Glide;
 import com.bumptech.glide.load.model.GlideUrl;
 import com.bumptech.glide.load.model.LazyHeaders;
 import com.example.administrator.pixivtest.Bean.Week;
+import com.example.administrator.pixivtest.MyApplication;
 import com.example.administrator.pixivtest.R;
+import com.example.administrator.pixivtest.Utils.GlideCircleTransform;
 
 import java.util.ArrayList;
 
@@ -44,6 +46,11 @@ public class WeekAdapter extends RecyclerView.Adapter<WeekAdapter.ViewHolder> {
                 .addHeader("User-Agent","Mozilla/5.0 (Windows NT 10.0; WOW64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/69.0.3497.100 Safari/537.36")
                 .build());
         Glide.with(mContext).load(glideUrl).into(holder.dailyView);
+        GlideUrl glideUrl1 = new GlideUrl(weekList.get(position).getPainterImg(),new LazyHeaders.Builder()
+                .addHeader("Referer","https://www.pixiv.net/")
+                .addHeader("User-Agent","Mozilla/5.0 (Windows NT 10.0; WOW64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/69.0.3497.100 Safari/537.36")
+                .build());
+        Glide.with(mContext).load(glideUrl1).centerCrop().transform(new GlideCircleTransform(MyApplication.getContext())).into(holder.painterImg);
         holder.painter.setText(weekList.get(position).getPainter());
         holder.works.setText(weekList.get(position).getWorks());
     }
@@ -57,6 +64,7 @@ public class WeekAdapter extends RecyclerView.Adapter<WeekAdapter.ViewHolder> {
 
         CardView cardView;
         ImageView dailyView;
+        ImageView painterImg;
         TextView works;
         TextView painter;
 
@@ -64,6 +72,7 @@ public class WeekAdapter extends RecyclerView.Adapter<WeekAdapter.ViewHolder> {
             super(itemView);
             cardView = (CardView) itemView;
             dailyView = (ImageView) itemView.findViewById(R.id.week_img);
+            painterImg = (ImageView)itemView.findViewById(R.id.week_painterImg);
             works = (TextView)itemView.findViewById(R.id.week_works);
             painter = (TextView)itemView.findViewById(R.id.week_painter);
 

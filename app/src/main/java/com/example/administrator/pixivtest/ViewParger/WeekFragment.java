@@ -63,6 +63,10 @@ public class WeekFragment extends Fragment {
 
     private List<String> painterList;
 
+    private List<String> painterImgList;
+
+    private  Calendar cal;
+
     private Message message;
 
     private Handler mHandler = new Handler() {
@@ -100,9 +104,19 @@ public class WeekFragment extends Fragment {
     }
 
     private void getWeekJson(){    //从pixiv的API中获取周榜json并显示出来图片
+        cal = Calendar.getInstance();
+        cal.setTimeZone(TimeZone.getTimeZone("GMT+8:00"));
+        String year = String.valueOf(cal.get(Calendar.YEAR));
+        String month = String.valueOf(cal.get(Calendar.MONTH)+1);
+        int day = cal.get(Calendar.DATE) - 2;        //2018-11-08
+        String day1 = null;
+        if (day<10){
+            day1 = "0" + day;
+        }else {
+            day1 = "" + day;
+        }
 
-
-        String dailyUrl = "https://api.imjad.cn/pixiv/v1/?type=rank&content=all&mode=weekly";
+        String dailyUrl = "https://api.imjad.cn/pixiv/v1/?type=rank&content=illust&mode=weekly&per_page=20&page=1&date="+year+"-"+month+"-"+day1;
         Log.i("dailyUrl",dailyUrl);
         Request request = new Request.Builder()
                 .url(dailyUrl)
@@ -122,15 +136,18 @@ public class WeekFragment extends Fragment {
                 List<String> imgurl = new ArrayList<>();
                 List<String> works = new ArrayList<>();
                 List<String> painter = new ArrayList<>();
+                List<String> painterImg = new ArrayList<>();
                 for (int i = 0;i<weekBean.getResponse().get(0).getWorks().size();i++){
                     imgurl.add(weekBean.getResponse().get(0).getWorks().get(i).getWork().getImage_urls().getPx_480mw());
                     painter.add(weekBean.getResponse().get(0).getWorks().get(i).getWork().getUser().getName());
                     works.add(weekBean.getResponse().get(0).getWorks().get(i).getWork().getTitle());
+                    painterImg.add(weekBean.getResponse().get(0).getWorks().get(i).getWork().getUser().getProfile_image_urls().getPx_170x170());
                     Log.i("url",weekBean.getResponse().get(0).getWorks().get(i).getWork().getImage_urls().getPx_480mw());
                 }
                 weekList = imgurl;
                 worksList = works;
                 painterList = painter;
+                painterImgList = painterImg;
                 ArrayList<Week> WeeklList = initData();
                 message = mHandler.obtainMessage();
                 message.obj = WeeklList;
@@ -148,6 +165,7 @@ public class WeekFragment extends Fragment {
             week.setImage_url(weekList.get(i));
             week.setWorks(worksList.get(i));
             week.setPainter(painterList.get(i));
+            week.setPainterImg(painterImgList.get(i));
             weeks.add(week);
         }
         return weeks;

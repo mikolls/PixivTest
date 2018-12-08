@@ -11,6 +11,7 @@ import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.widget.ProgressBar;
 import android.widget.TextView;
 
 import com.example.administrator.pixivtest.Bean.Daily;
@@ -55,7 +56,11 @@ public class DailyFragment extends Fragment {
 
     private List<String> painterList;
 
+    private List<String> painterImgList;
+
     private RecyclerView recyclerView;
+
+    private ProgressBar progressBar;
 
     private ArrayList<Daily> androidDaily;
 
@@ -74,6 +79,7 @@ public class DailyFragment extends Fragment {
                     androidDaily = (ArrayList<Daily>) msg.obj;
                     adapter = new DailyAdapter(MyApplication.getContext(),androidDaily);
                     recyclerView.setAdapter(adapter);
+                    progressBar.setVisibility(View.GONE);
                     break;
             }
         }
@@ -82,6 +88,8 @@ public class DailyFragment extends Fragment {
     @Override
     public View onCreateView(LayoutInflater inflater, @Nullable ViewGroup container, @Nullable Bundle savedInstanceState) {
         View view = inflater.inflate(R.layout.daily_fragment,container,false);
+
+        progressBar = (ProgressBar)view.findViewById(R.id.progress);
 
         builder = new OkHttpClient.Builder();
         persistentCookieStore = new PersistentCookieStore(MyApplication.getContext());
@@ -106,8 +114,12 @@ public class DailyFragment extends Fragment {
         String year = String.valueOf(cal.get(Calendar.YEAR));
         String month = String.valueOf(cal.get(Calendar.MONTH)+1);
         int day = cal.get(Calendar.DATE) - 2;        //2018-11-08
-
-        String day1 = day + "";
+        String day1 = null;
+        if (day<10){
+            day1 = "0" + day;
+        }else {
+            day1 = "" + day;
+        }
 
         String dailyUrl = "https://api.imjad.cn/pixiv/v1/?type=rank&content=all&mode=daily&page=1&per_page=20&date="+year+"-"+month+"-"+day1;
         Log.i("dailyUrl",dailyUrl);
@@ -129,15 +141,18 @@ public class DailyFragment extends Fragment {
                 List<String> imgurl = new ArrayList<>();
                 List<String> works = new ArrayList<>();
                 List<String> painter = new ArrayList<>();
+                List<String> painterImg = new ArrayList<>();
                 for (int i = 0;i<dailyBean.getResponse().get(0).getWorks().size();i++){
                     imgurl.add(dailyBean.getResponse().get(0).getWorks().get(i).getWork().getImage_urls().getPx_480mw());
                     painter.add(dailyBean.getResponse().get(0).getWorks().get(i).getWork().getUser().getName());
                     works.add(dailyBean.getResponse().get(0).getWorks().get(i).getWork().getTitle());
-                    Log.i("url",dailyBean.getResponse().get(0).getWorks().get(i).getWork().getImage_urls().getPx_480mw());
+                    painterImg.add(dailyBean.getResponse().get(0).getWorks().get(i).getWork().getUser().getProfile_image_urls().getPx_170x170());
+                    Log.i("url",dailyBean.getResponse().get(0).getWorks().get(i).getWork().getUser().getProfile_image_urls().getPx_170x170());
                 }
                 dailyList = imgurl;
                 worksList = works;
                 painterList = painter;
+                painterImgList = painterImg;
                 ArrayList<Daily> DailylList = initData();
                 message = mHandler.obtainMessage();
                 message.obj = DailylList;
@@ -156,6 +171,7 @@ public class DailyFragment extends Fragment {
             daily.setImage_url(dailyList.get(i));
             daily.setWorks(worksList.get(i));
             daily.setPainter(painterList.get(i));
+            daily.setPainterImg(painterImgList.get(i));
             dailies.add(daily);
         }
         return dailies;

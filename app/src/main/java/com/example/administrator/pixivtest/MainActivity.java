@@ -265,9 +265,6 @@ public class MainActivity extends AppCompatActivity implements RadioGroup.OnChec
                 UserData = addStr+userData;     //用户信息界面地址
                 Log.i("UserData",UserData);
 
-/*                selecct = parse.select("ul[class=_image-items gtm-illust-recommend-zone]");
-                Log.i("recommend",selecct.outerHtml());*/
-
 
                 message = mHandler.obtainMessage();
                 message.what = 1;

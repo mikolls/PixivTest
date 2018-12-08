@@ -21,15 +21,16 @@
             android:layout_width="match_parent"
             android:layout_height="75dp">
 
-            <de.hdodenhof.circleimageview.CircleImageView
+            <ImageView
+                android:id="@+id/week_painterImg"
                 android:layout_width="50dp"
                 android:layout_height="50dp"
                 android:layout_alignParentLeft="true"
                 android:layout_alignParentStart="true"
                 android:layout_centerVertical="true"
-                android:layout_marginLeft="11dp"
-                android:layout_marginStart="11dp"
-                android:id="@+id/week_painterimg" />
+                android:layout_marginLeft="7dp"
+                android:layout_marginStart="7dp"
+                android:scaleType="centerInside" />
 
             <TextView
                 android:id="@+id/week_works"
@@ -46,9 +47,11 @@
                 android:id="@+id/textView"
                 android:layout_width="40dp"
                 android:layout_height="25dp"
-                android:layout_alignTop="@+id/week_painterimg"
-                android:layout_toEndOf="@+id/week_painterimg"
-                android:layout_toRightOf="@+id/week_painterimg"
+                android:layout_alignTop="@+id/week_painterImg"
+                android:layout_marginLeft="9dp"
+                android:layout_marginStart="9dp"
+                android:layout_toEndOf="@+id/week_painterImg"
+                android:layout_toRightOf="@+id/week_painterImg"
                 android:text="作品:" />
 
             <TextView

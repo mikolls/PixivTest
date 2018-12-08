@@ -12,7 +12,17 @@ public class Daily {
 
     private String painter;     //作者
 
+    private String painterImg;      //作者头像
+
     public Daily(){}
+
+    public String getPainterImg() {
+        return painterImg;
+    }
+
+    public void setPainterImg(String painterImg) {
+        this.painterImg = painterImg;
+    }
 
     public String getImage_url() {
         return image_url;

@@ -11,7 +11,17 @@ public class Week {
 
     private String painter;     //作者
 
+    private String painterImg;      //作者头像
+
     public Week(){}
+
+    public String getPainterImg() {
+        return painterImg;
+    }
+
+    public void setPainterImg(String painterImg) {
+        this.painterImg = painterImg;
+    }
 
     public String getImage_url() {
         return image_url;

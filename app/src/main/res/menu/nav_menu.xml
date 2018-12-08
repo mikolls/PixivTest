@@ -6,19 +6,33 @@
     <group android:checkableBehavior="single">
         <item
             android:icon="@drawable/homepage"
-            android:title="homepage" />
+            android:title="主页" />
         <item
             android:icon="@drawable/newimage"
-            android:title="new" />
+            android:title="排行" />
         <item
             android:icon="@drawable/search"
-            android:title="search"
+            android:title="搜索"
             tools:layout_editor_absoluteX="100dp"
             tools:layout_editor_absoluteY="0dp" />
-        <item
-            android:title="log out"
-            tools:layout_editor_absoluteX="100dp"
-            tools:layout_editor_absoluteY="0dp" />
+        <item android:title="">
+            <menu>
+                <item
+                    android:icon="@drawable/about"
+                    android:title="关于"
+                    tools:layout_editor_absoluteX="100dp"
+                    tools:layout_editor_absoluteY="0dp"
+                    >
+
+                </item>
+            <item
+                android:icon="@drawable/logout"
+                android:title="退出"
+                tools:layout_editor_absoluteX="100dp"
+                tools:layout_editor_absoluteY="0dp" />
+            </menu>
+        </item>
+
 
     </group>
 
