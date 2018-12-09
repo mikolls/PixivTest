@@ -58,6 +58,8 @@ public class DailyFragment extends Fragment {
 
     private List<String> painterImgList;
 
+    private List<String> largeImgList;
+
     private RecyclerView recyclerView;
 
     private ProgressBar progressBar;
@@ -142,17 +144,20 @@ public class DailyFragment extends Fragment {
                 List<String> works = new ArrayList<>();
                 List<String> painter = new ArrayList<>();
                 List<String> painterImg = new ArrayList<>();
+                List<String> largeImg = new ArrayList<>();
                 for (int i = 0;i<dailyBean.getResponse().get(0).getWorks().size();i++){
                     imgurl.add(dailyBean.getResponse().get(0).getWorks().get(i).getWork().getImage_urls().getPx_480mw());
                     painter.add(dailyBean.getResponse().get(0).getWorks().get(i).getWork().getUser().getName());
                     works.add(dailyBean.getResponse().get(0).getWorks().get(i).getWork().getTitle());
                     painterImg.add(dailyBean.getResponse().get(0).getWorks().get(i).getWork().getUser().getProfile_image_urls().getPx_170x170());
+                    largeImg.add(dailyBean.getResponse().get(0).getWorks().get(i).getWork().getImage_urls().getLarge());
                     Log.i("url",dailyBean.getResponse().get(0).getWorks().get(i).getWork().getUser().getProfile_image_urls().getPx_170x170());
                 }
                 dailyList = imgurl;
                 worksList = works;
                 painterList = painter;
                 painterImgList = painterImg;
+                largeImgList = largeImg;
                 ArrayList<Daily> DailylList = initData();
                 message = mHandler.obtainMessage();
                 message.obj = DailylList;
@@ -172,6 +177,7 @@ public class DailyFragment extends Fragment {
             daily.setWorks(worksList.get(i));
             daily.setPainter(painterList.get(i));
             daily.setPainterImg(painterImgList.get(i));
+            daily.setLargeImg(largeImgList.get(i));
             dailies.add(daily);
         }
         return dailies;

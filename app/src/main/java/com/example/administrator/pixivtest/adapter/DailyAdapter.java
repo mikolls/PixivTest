@@ -18,6 +18,7 @@ import com.example.administrator.pixivtest.DailyActivity;
 import com.example.administrator.pixivtest.MyApplication;
 import com.example.administrator.pixivtest.R;
 import com.example.administrator.pixivtest.Utils.GlideCircleTransform;
+import com.example.administrator.pixivtest.Utils.GlideUtils;
 
 import java.lang.reflect.Array;
 import java.util.ArrayList;
@@ -66,19 +67,14 @@ public class DailyAdapter extends RecyclerView.Adapter<DailyAdapter.ViewHolder> 
                 intent.putExtra(DailyActivity.Daily_title,daily.getWorks());
                 intent.putExtra(DailyActivity.Daily_painter,daily.getPainter());
                 intent.putExtra(DailyActivity.Daily_painterImg,daily.getPainterImg());
+                intent.putExtra(DailyActivity.largeImg,daily.getLargeImg());
                 mContext.startActivity(intent);
             }
         });
-        GlideUrl glideUrl = new GlideUrl(dailyList.get(position).getImage_url(), new LazyHeaders.Builder()
-                .addHeader("Referer","https://www.pixiv.net/")
-                .addHeader("User-Agent","Mozilla/5.0 (Windows NT 10.0; WOW64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/69.0.3497.100 Safari/537.36")
-                .build());
-        Glide.with(mContext).load(glideUrl).into(holder.dailyView);
-        GlideUrl glideUrl1 = new GlideUrl(dailyList.get(position).getPainterImg(),new LazyHeaders.Builder()
-                .addHeader("Referer","https://www.pixiv.net/")
-                .addHeader("User-Agent","Mozilla/5.0 (Windows NT 10.0; WOW64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/69.0.3497.100 Safari/537.36")
-                .build());
-        Glide.with(mContext).load(glideUrl1).centerCrop().transform(new GlideCircleTransform(MyApplication.getContext())).into(holder.painterImg);
+
+        GlideUtils.loadImg(dailyList.get(position).getImage_url(),holder.dailyView);
+        GlideUtils.loadCircleImg(dailyList.get(position).getPainterImg(),holder.painterImg);
+
         holder.painter.setText(dailyList.get(position).getPainter());
         holder.works.setText(dailyList.get(position).getWorks());
     }

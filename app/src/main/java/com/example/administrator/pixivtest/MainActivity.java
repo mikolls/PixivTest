@@ -1,9 +1,11 @@
 package com.example.administrator.pixivtest;
 
+import android.content.Intent;
 import android.graphics.Bitmap;
 import android.graphics.BitmapFactory;
 import android.os.Handler;
 import android.os.Message;
+import android.support.annotation.NonNull;
 import android.support.design.widget.NavigationView;
 import android.support.v4.app.Fragment;
 import android.support.v4.app.FragmentStatePagerAdapter;
@@ -15,6 +17,7 @@ import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
 import android.support.v7.widget.Toolbar;
 import android.util.Log;
+import android.view.KeyEvent;
 import android.view.Menu;
 import android.view.MenuItem;
 import android.view.View;
@@ -78,6 +81,8 @@ public class MainActivity extends AppCompatActivity implements RadioGroup.OnChec
     private String UserData;
 
     private String UserImg;
+
+    private NavigationView nav;
 
     //屏幕一半的宽度
     private int width;
@@ -153,6 +158,20 @@ public class MainActivity extends AppCompatActivity implements RadioGroup.OnChec
         userName = (TextView)headerView.findViewById(R.id.user_name);
 
         userImg = (CircleImageView)headerView.findViewById(R.id.user_img);
+
+        navigationView.setNavigationItemSelectedListener(new NavigationView.OnNavigationItemSelectedListener() {
+            @Override
+            public boolean onNavigationItemSelected(@NonNull MenuItem item) {
+                switch (item.getItemId()){
+                    case R.id.about:
+                        Intent intent = new Intent(MainActivity.this,AboutActivity.class);
+                        startActivity(intent);
+                        break;
+                    default:
+                }
+                return false;
+            }
+        });
 
         radioGroup = (RadioGroup) findViewById(R.id.home_rg);
         view = findViewById(R.id.home_wl_view);
@@ -337,4 +356,16 @@ public class MainActivity extends AppCompatActivity implements RadioGroup.OnChec
     public void onCheckedChanged(RadioGroup group, int checkedId) {
         viewPager.setCurrentItem(checkedId == R.id.home_DailyList ? 0 : 1);
     }
+
+    @Override
+    public boolean onKeyDown(int keyCode, KeyEvent event) {
+        if(keyCode == KeyEvent.KEYCODE_BACK){
+            moveTaskToBack(true);
+            return true;
+        }
+        ActivityCollector.finishAll();
+        return super.onKeyDown(keyCode, event);
+    }
+
+
 }

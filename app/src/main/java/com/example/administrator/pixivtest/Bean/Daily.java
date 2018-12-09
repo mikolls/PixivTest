@@ -14,7 +14,17 @@ public class Daily {
 
     private String painterImg;      //作者头像
 
+    private String largeImg;
+
     public Daily(){}
+
+    public String getLargeImg() {
+        return largeImg;
+    }
+
+    public void setLargeImg(String largeImg) {
+        this.largeImg = largeImg;
+    }
 
     public String getPainterImg() {
         return painterImg;

@@ -18,6 +18,7 @@
         <item android:title="">
             <menu>
                 <item
+                    android:id="@+id/about"
                     android:icon="@drawable/about"
                     android:title="关于"
                     tools:layout_editor_absoluteX="100dp"

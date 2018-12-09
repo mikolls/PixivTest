@@ -3,6 +3,8 @@
     package="com.example.administrator.pixivtest">
 
     <uses-permission android:name="android.permission.INTERNET" />
+    <uses-permission android:name="android.permission.READ_EXTERNAL_STORAGE" />
+    <uses-permission android:name="android.permission.WRITE_EXTERNAL_STORAGE" />
 
     <application
         android:name=".MyApplication"
@@ -21,7 +23,9 @@
         </activity>
         <activity android:name=".MainActivity" />
         <activity android:name=".LoginActivity" />
-        <activity android:name=".DailyActivity"></activity>
+        <activity android:name=".DailyActivity" />
+        <activity android:name=".OriginalimgActivity" />
+        <activity android:name=".AboutActivity"></activity>
     </application>
 
 </manifest>

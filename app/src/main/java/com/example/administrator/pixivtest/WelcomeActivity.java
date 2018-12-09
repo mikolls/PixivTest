@@ -61,8 +61,6 @@ public class WelcomeActivity extends AppCompatActivity {
                     public void onResponse(Call call, Response response) throws IOException {
                         String responseContent = response.body().string();
 
-//                        Log.i("getUserName:  ",response.body().string().toString());
-
                         Document parse = Jsoup.parse(responseContent);
                         Elements selecct = parse.getElementsByTag("title");
 
@@ -70,7 +68,6 @@ public class WelcomeActivity extends AppCompatActivity {
                         String title_index = "イラスト コミュニケーションサービス[pixiv(ピクシブ)]";
                         Log.i("title:",title);
                         if (title.equals(title_index)){
-
                             Intent intent = new Intent(WelcomeActivity.this,LoginActivity.class);
                             startActivity(intent);
                         }else {
